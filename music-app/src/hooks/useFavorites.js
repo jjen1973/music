@@ -12,9 +12,7 @@ export function useFavorites(userKey) {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const favRef = userKey
-    ? collection(db, "users", userKey, "favorites")
-    : null;
+  const favRef = userKey ? collection(db, "users", userKey, "favorites") : null;
 
   useEffect(() => {
     if (!userKey) {

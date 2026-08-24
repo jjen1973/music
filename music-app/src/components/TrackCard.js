@@ -12,6 +12,7 @@ const GENRE_COLORS = {
 };
 
 const NOTE_ICONS = ["🎵","🎶","🎸","🥁","🎹","🎺","🎻","🪗"];
+const BRAND_ICON = "/artwork/abstract-1.png";
 
 function randomNote(id) {
   return NOTE_ICONS[id.charCodeAt(0) % NOTE_ICONS.length];
@@ -34,6 +35,7 @@ export default function TrackCard({ track, isFavorite, onToggleFavorite, isLogge
   return (
     <div className="track-card" onClick={handlePlay}>
       <div className="track-thumb" style={{ background: bg }}>
+        <img className="track-brand-icon" src={BRAND_ICON} alt="" aria-hidden="true" />
         {track.artwork ? (
           <img className="track-artwork" src={track.artwork} alt="" aria-hidden="true" />
         ) : (

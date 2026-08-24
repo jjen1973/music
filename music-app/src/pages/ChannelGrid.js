@@ -9,10 +9,10 @@ import "./ChannelGrid.css";
 
 // Your 5 source tracks
 const ALL_TRACKS = [
-  { id: "bang-the-drum",    title: "Bang the Drum",       artist: "Session Artist",  genre: "Rock",       duration: "3:42", isNew: true,  audioSrc: "/audio/bang-the-drum.mp3", artwork: "/logo192.png" },
-  { id: "one-more-sunrise", title: "One More Sunrise",    artist: "Morning Crew",    genre: "Pop",        duration: "4:15", isNew: false, audioSrc: "/audio/one-more-sunrise.mp3", artwork: "/logo512.png" },
-  { id: "paper-map-summit", title: "Paper Map Summit",    artist: "The Wanderers",   genre: "Country",    duration: "3:58", isNew: false, audioSrc: "/audio/paper-map-summit.mp3", artwork: "/logo192.png" },
-  { id: "receipt-queen",    title: "Receipt Queen",       artist: "Urban Stories",   genre: "Electronic", duration: "3:21", isNew: true,  audioSrc: "/audio/receipt-queen.mp3", artwork: "/logo512.png" },
+  { id: "bang-the-drum",    title: "Bang the Drum",       artist: "Session Artist",  genre: "Rock",       duration: "3:42", isNew: true,  audioSrc: "/audio/bang-the-drum.mp3", artwork: "/artwork/gc_front_gal.jpg" },
+  { id: "one-more-sunrise", title: "One More Sunrise",    artist: "Morning Crew",    genre: "Pop",        duration: "4:15", isNew: false, audioSrc: "/audio/one-more-sunrise.mp3", artwork: "/artwork/grybus_wildsam.jpg" },
+  { id: "paper-map-summit", title: "Paper Map Summit",    artist: "The Wanderers",   genre: "Country",    duration: "3:58", isNew: false, audioSrc: "/audio/paper-map-summit.mp3", artwork: "/artwork/abstract-2.png" },
+  { id: "receipt-queen",    title: "Receipt Queen",       artist: "Urban Stories",   genre: "Electronic", duration: "3:21", isNew: true,  audioSrc: "/audio/receipt-queen.mp3", artwork: "/artwork/cash-register.jpg" },
   { id: "red-hand-mark",    title: "Red Hand Mark",       artist: "Dark Matter",     genre: "Rock",       duration: "4:02", isNew: false, audioSrc: "/audio/red-hand-mark.mp3", artwork: "/logo192.png" },
 ];
 
@@ -20,7 +20,7 @@ const TABS = ["All", "Favorites"];
 
 export default function ChannelGrid() {
   const user = useAuth();
-  const userKey = user?.email?.trim().toLowerCase();
+  const userKey = user?.uid;
   const { favorites, toggle } = useFavorites(userKey);
   const audioRef = useRef(null);
   const [tracksLoading, setTracksLoading] = useState(true);
