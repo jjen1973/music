@@ -17,7 +17,7 @@ function randomNote(id) {
   return NOTE_ICONS[id.charCodeAt(0) % NOTE_ICONS.length];
 }
 
-export default function TrackCard({ track, isFavorite, onToggleFavorite, isLoggedIn }) {
+export default function TrackCard({ track, isFavorite, onToggleFavorite, isLoggedIn, isPlaying, onPlayTrack }) {
   const bg = GENRE_COLORS[track.genre?.toLowerCase()] ?? GENRE_COLORS.default;
   const icon = randomNote(track.id);
 
@@ -26,11 +26,23 @@ export default function TrackCard({ track, isFavorite, onToggleFavorite, isLogge
     if (isLoggedIn) onToggleFavorite(track.id);
   };
 
+  const handlePlay = (e) => {
+    e.stopPropagation();
+    onPlayTrack(track);
+  };
+
   return (
-    <div className="track-card">
+    <div className="track-card" onClick={handlePlay}>
       <div className="track-thumb" style={{ background: bg }}>
-        <span className="track-icon">{icon}</span>
+        {track.artwork ? (
+          <img className="track-artwork" src={track.artwork} alt="" aria-hidden="true" />
+        ) : (
+          <span className="track-icon">{icon}</span>
+        )}
         {track.isNew && <span className="track-badge">NEW</span>}
+        <button className="track-play-btn" onClick={handlePlay} title={isPlaying ? "Pause" : "Play"}>
+          {isPlaying ? "❚❚" : "▶"}
+        </button>
         <button
           className={`track-fav-btn ${isFavorite ? "active" : ""}`}
           onClick={handleFav}

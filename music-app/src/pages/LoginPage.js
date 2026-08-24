@@ -24,7 +24,18 @@ export default function LoginPage() {
         await signInWithEmailAndPassword(auth, email, password);
       }
     } catch (err) {
-      setError(err.message.replace("Firebase: ", "").replace(/ \(auth\/.*\)\.?/, ""));
+      const code = err?.code || "";
+      if (code === "auth/invalid-api-key") {
+        setError("Firebase config is missing or incorrect. Paste the Web app config into src/firebase.js or .env.local.");
+      } else if (code === "auth/operation-not-allowed") {
+        setError("Email/password sign-in is not enabled in Firebase Authentication.");
+      } else if (code === "auth/user-not-found") {
+        setError("No account found for that email. Switch to Sign Up to create one.");
+      } else if (code === "auth/wrong-password") {
+        setError("Incorrect password.");
+      } else {
+        setError((err?.message || "Login failed").replace("Firebase: ", "").replace(/ \(auth\/.*\)\.?/, ""));
+      }
     } finally {
       setLoading(false);
     }
@@ -84,6 +95,7 @@ export default function LoginPage() {
           {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
           <button
             className="login-toggle-btn"
+            type="button"
             onClick={() => { setIsSignUp(!isSignUp); setError(""); }}
           >
             {isSignUp ? "Sign In" : "Sign Up"}

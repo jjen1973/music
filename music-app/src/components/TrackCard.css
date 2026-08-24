@@ -29,6 +29,14 @@
   filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
 }
 
+.track-artwork {
+  width: 72%;
+  height: 72%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.45));
+  opacity: 0.95;
+}
+
 .track-badge {
   position: absolute;
   top: 0.6rem;
@@ -59,6 +67,29 @@
   justify-content: center;
   transition: background 0.2s, color 0.2s, transform 0.15s;
   line-height: 1;
+}
+
+.track-play-btn {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.85rem;
+  height: 34px;
+  width: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.track-play-btn:hover {
+  background: rgba(124,58,237,0.7);
+  transform: scale(1.1);
 }
 
 .track-fav-btn:hover {
@@ -114,4 +145,42 @@
   color: rgba(255,255,255,0.35);
   font-size: 0.75rem;
   margin-left: auto;
+}
+
+.channel-player {
+  position: sticky;
+  bottom: 0;
+  margin: 1rem 2rem 2rem;
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  background: rgba(10, 10, 18, 0.92);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  backdrop-filter: blur(12px);
+}
+
+.channel-player-label {
+  color: rgba(255,255,255,0.45);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.channel-player-title {
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.channel-player-btn {
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  border: none;
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
 }

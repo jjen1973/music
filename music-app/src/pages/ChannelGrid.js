@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useAuth } from "../hooks/useAuth";
@@ -7,32 +7,71 @@ import TrackCard from "../components/TrackCard";
 import SkeletonCard from "../components/SkeletonCard";
 import "./ChannelGrid.css";
 
-// Sample tracks – in production these could come from Firestore
+// Your 5 source tracks
 const ALL_TRACKS = [
-  { id: "bang-the-drum",    title: "Bang the Drum",       artist: "Session Artist",  genre: "Rock",       duration: "3:42", isNew: true  },
-  { id: "one-more-sunrise", title: "One More Sunrise",    artist: "Morning Crew",    genre: "Pop",        duration: "4:15", isNew: false },
-  { id: "paper-map-summit", title: "Paper Map Summit",    artist: "The Wanderers",   genre: "Country",    duration: "3:58", isNew: false },
-  { id: "receipt-queen",    title: "Receipt Queen",       artist: "Urban Stories",   genre: "Electronic", duration: "3:21", isNew: true  },
-  { id: "red-hand-mark",    title: "Red Hand Mark",       artist: "Dark Matter",     genre: "Rock",       duration: "4:02", isNew: false },
-  { id: "neon-highways",    title: "Neon Highways",       artist: "Synth Wave Co.",  genre: "Electronic", duration: "5:10", isNew: false },
-  { id: "velvet-mornings",  title: "Velvet Mornings",     artist: "Jazz Collective", genre: "Jazz",       duration: "6:30", isNew: true  },
-  { id: "silver-lining",    title: "Silver Lining",       artist: "Indie Bloom",     genre: "Pop",        duration: "3:55", isNew: false },
+  { id: "bang-the-drum",    title: "Bang the Drum",       artist: "Session Artist",  genre: "Rock",       duration: "3:42", isNew: true,  audioSrc: "/audio/bang-the-drum.mp3", artwork: "/logo192.png" },
+  { id: "one-more-sunrise", title: "One More Sunrise",    artist: "Morning Crew",    genre: "Pop",        duration: "4:15", isNew: false, audioSrc: "/audio/one-more-sunrise.mp3", artwork: "/logo512.png" },
+  { id: "paper-map-summit", title: "Paper Map Summit",    artist: "The Wanderers",   genre: "Country",    duration: "3:58", isNew: false, audioSrc: "/audio/paper-map-summit.mp3", artwork: "/logo192.png" },
+  { id: "receipt-queen",    title: "Receipt Queen",       artist: "Urban Stories",   genre: "Electronic", duration: "3:21", isNew: true,  audioSrc: "/audio/receipt-queen.mp3", artwork: "/logo512.png" },
+  { id: "red-hand-mark",    title: "Red Hand Mark",       artist: "Dark Matter",     genre: "Rock",       duration: "4:02", isNew: false, audioSrc: "/audio/red-hand-mark.mp3", artwork: "/logo192.png" },
 ];
 
 const TABS = ["All", "Favorites"];
 
 export default function ChannelGrid() {
   const user = useAuth();
-  const { favorites, loading: favLoading, toggle } = useFavorites(user?.uid);
+  const userKey = user?.email?.trim().toLowerCase();
+  const { favorites, toggle } = useFavorites(userKey);
+  const audioRef = useRef(null);
   const [tracksLoading, setTracksLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("All");
   const [search, setSearch] = useState("");
+  const [currentTrack, setCurrentTrack] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   // Simulate initial tracks loading
   useEffect(() => {
     const t = setTimeout(() => setTracksLoading(false), 1800);
     return () => clearTimeout(t);
   }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handleEnded = () => setIsPlaying(false);
+    audio.addEventListener("ended", handleEnded);
+    return () => audio.removeEventListener("ended", handleEnded);
+  }, []);
+
+  const handlePlayTrack = async (track) => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (currentTrack?.id === track.id) {
+      if (isPlaying) {
+        audio.pause();
+        setIsPlaying(false);
+        return;
+      }
+      try {
+        await audio.play();
+        setIsPlaying(true);
+      } catch (error) {
+        setIsPlaying(false);
+      }
+      return;
+    }
+
+    setCurrentTrack(track);
+    audio.src = track.audioSrc;
+    try {
+      await audio.play();
+      setIsPlaying(true);
+    } catch (error) {
+      setIsPlaying(false);
+    }
+  };
 
   const filtered = ALL_TRACKS.filter((t) => {
     if (activeTab === "Favorites" && !favorites.includes(t.id)) return false;
@@ -109,11 +148,30 @@ export default function ChannelGrid() {
                 isFavorite={favorites.includes(track.id)}
                 onToggleFavorite={toggle}
                 isLoggedIn={!!user}
+                isPlaying={currentTrack?.id === track.id && isPlaying}
+                onPlayTrack={handlePlayTrack}
               />
             ))}
           </div>
         )}
       </main>
+
+      <audio ref={audioRef} preload="none" />
+
+      {currentTrack && (
+        <div className="channel-player">
+          <div>
+            <div className="channel-player-label">Now playing</div>
+            <div className="channel-player-title">{currentTrack.title}</div>
+          </div>
+          <button
+            className="channel-player-btn"
+            onClick={() => handlePlayTrack(currentTrack)}
+          >
+            {isPlaying ? "Pause" : "Play"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   collection,
   doc,
@@ -8,16 +8,16 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 
-export function useFavorites(userId) {
+export function useFavorites(userKey) {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const favRef = userId
-    ? collection(db, "users", userId, "favorites")
+  const favRef = userKey
+    ? collection(db, "users", userKey, "favorites")
     : null;
 
   useEffect(() => {
-    if (!userId) {
+    if (!userKey) {
       setFavorites([]);
       setLoading(false);
       return;
@@ -27,11 +27,11 @@ export function useFavorites(userId) {
       setFavorites(snap.docs.map((d) => d.id));
       setLoading(false);
     });
-  }, [userId]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [userKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const toggle = async (trackId) => {
-    if (!userId) return;
-    const docRef = doc(db, "users", userId, "favorites", trackId);
+    if (!userKey) return;
+    const docRef = doc(db, "users", userKey, "favorites", trackId);
     if (favorites.includes(trackId)) {
       await deleteDoc(docRef);
       setFavorites((prev) => prev.filter((id) => id !== trackId));
