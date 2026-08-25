@@ -7,13 +7,16 @@ import TrackCard from "../components/TrackCard";
 import SkeletonCard from "../components/SkeletonCard";
 import "./ChannelGrid.css";
 
-// Your 5 source tracks
+// Your source tracks
 const ALL_TRACKS = [
   { id: "bang-the-drum",    title: "Bang the Drum",       artist: "Session Artist",  genre: "Rock",       duration: "3:42", isNew: true,  audioSrc: "/audio/bang-the-drum.mp3", artwork: "/artwork/gc_front_gal.jpg" },
   { id: "one-more-sunrise", title: "One More Sunrise",    artist: "Morning Crew",    genre: "Pop",        duration: "4:15", isNew: false, audioSrc: "/audio/one-more-sunrise.mp3", artwork: "/artwork/grybus_wildsam.jpg" },
   { id: "paper-map-summit", title: "Paper Map Summit",    artist: "The Wanderers",   genre: "Country",    duration: "3:58", isNew: false, audioSrc: "/audio/paper-map-summit.mp3", artwork: "/artwork/abstract-2.png" },
   { id: "receipt-queen",    title: "Receipt Queen",       artist: "Urban Stories",   genre: "Electronic", duration: "3:21", isNew: true,  audioSrc: "/audio/receipt-queen.mp3", artwork: "/artwork/cash-register.jpg" },
-  { id: "red-hand-mark",    title: "Red Hand Mark",       artist: "Dark Matter",     genre: "Rock",       duration: "4:02", isNew: false, audioSrc: "/audio/red-hand-mark.mp3", artwork: "/logo192.png" },
+  { id: "get-a-bird",       title: "Get A Bird",          artist: "Ridge & Pine",   genre: "Indie",      duration: "3:46", isNew: true,  audioSrc: "/audio/Get%20A%20Bird.mp3", artwork: "/artwork/sun-conure-parrot.jpg" },
+  { id: "im-not-done-yet",  title: "I'm Not Done Yet",    artist: "North Harbor",   genre: "Alternative", duration: "4:11", isNew: true,  audioSrc: "/audio/Im%20not%20done%20yet.mp3", artwork: "/artwork/im-not-done-yet-cover.png" },
+  { id: "paper-cup-moon",   title: "Paper Cup Moon",      artist: "Cinder Line",    genre: "Folk",       duration: "4:08", isNew: true,  audioSrc: "/audio/Paper%20Cup%20Moon.mp3", artwork: "/artwork/paper-cup-moon-1.png" },
+  { id: "red-hand-mark",    title: "Red Hand Mark",       artist: "Dark Matter",     genre: "Rock",       duration: "4:02", isNew: false, audioSrc: "/audio/red-hand-mark.mp3", artwork: "/artwork/red-hand-separate.png" },
 ];
 
 const TABS = ["All", "Favorites"];
